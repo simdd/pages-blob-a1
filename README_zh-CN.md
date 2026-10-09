@@ -22,6 +22,7 @@
     └── node-app/                       # 路由前缀: /node-app
         ├── index.js                    # GET /node-app（首页 + 访客信息）
         └── api/
+            ├── fetch-test.js           # GET /node-app/api/fetch-test（出网 fetch 探测）
             └── [[default]].js          # /node-app/api/*（用户 CRUD + prefix 过滤 + 404 兜底）
 ```
 
@@ -66,6 +67,11 @@ curl -X DELETE <YOUR_DOMAIN>/edge-app/api/users/<ID>
 ```bash
 # 首页 - 访客信息
 curl <YOUR_DOMAIN>/node-app
+
+# 出网 fetch 探测（egress 配额）
+# 未超限 → {"ok":true,"restricted":false,...}
+# 已超限 → {"ok":false,"restricted":true,"code":"OUTBOUND_RESTRICTED",...}
+curl <YOUR_DOMAIN>/node-app/api/fetch-test
 
 # 创建用户
 curl -X POST -H "Content-Type: application/json" \

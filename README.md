@@ -24,6 +24,7 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
     └── node-app/                       # Route prefix: /node-app
         ├── index.js                    # GET /node-app (homepage + visitor info)
         └── api/
+            ├── fetch-test.js           # GET /node-app/api/fetch-test (outbound fetch probe)
             └── [[default]].js          # /node-app/api/* (user CRUD + prefix filter + 404 fallback)
 ```
 
@@ -68,6 +69,11 @@ curl -X DELETE <YOUR_DOMAIN>/edge-app/api/users/<ID>
 ```bash
 # Homepage - visitor info
 curl <YOUR_DOMAIN>/node-app
+
+# Outbound fetch probe (egress quota)
+# unrestricted → {"ok":true,"restricted":false,...}
+# restricted   → {"ok":false,"restricted":true,"code":"OUTBOUND_RESTRICTED",...}
+curl <YOUR_DOMAIN>/node-app/api/fetch-test
 
 # Create user
 curl -X POST -H "Content-Type: application/json" \
